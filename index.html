@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ToDoリスト</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+</head>
+<body>
+<header>
+<h1 class="title">ToDoリスト</h1>
+</header>
+<main>
+    <textarea id="contents"></textarea>
+    <ul>
+        <li id="save">追加</li>
+        <li id="clear">クリア</li>
+        <li id="reset">リセット</li>
+    </ul>
+<div id="list">
+<!-- ここに追加データが挿入される -->
+</div>
+</main>
+<script>
+
+//インプットエリアのテキストを取得する。
+//追加を押すと追加される。
+//削除を押すと削除される。
+
+$("#clear").on("click",function(){
+    $("#contents").val("");
+});
+
+$("#save").on("click",function(){
+    
+    const value = $("#contents").val();
+    const key = value
+    localStorage.setItem(key,value);
+    const toDo = '<div class="wrapper"><img src="img/pencil.png" id="logo"><p class="text">'+value+ '</p><a id="btn">完了<btn></a></div>';
+    $("#list").append(toDo);
+});
+
+$("#logo").on("click",function(){
+    $("#fullOverlay").css({'display':'initial','z-index':'263876798'});
+});
+
+$("#list").on("click","#btn",function(){
+   const remove = $(this).parent().text();
+   const key = remove.replace("完了","");
+   console.log(key);
+   localStorage.removeItem(key);
+   $(this).parent().remove();
+});
+
+$("#reset").on("click",function(){
+    localStorage.clear();
+    $("#list").empty();
+});
+
+for(i=0;i<localStorage.length;i++){
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    const toDo = '<div class="wrapper"><img src="img/pencil.png" id="logo"><p class="text">'+value+ '</p><a id="btn">完了<btn></a></div>';
+    $('#list').append(toDo);
+}
+
+
+</script>
+<footer><small></small></footer>
+</body>
+</html>
